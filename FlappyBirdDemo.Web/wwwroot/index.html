@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Hello Kitty Game</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="FlappyBirdDemo.Web.styles.css" rel="stylesheet" />
+    <audio id="background-music" src="/audio/game.mp3" loop></audio>
+    <audio id="gameover-sound" src="/audio/gameover.mp3" loop ></audio>
+    <audio id="start-music" src="/audio/start.mp3" loop ></audio>
+
+</head>
+
+<body>
+    <div id="app">Loading...</div>
+    <script src="_framework/blazor.webassembly.js"></script>
+
+    <script>function playCatchSound() {
+            var audio = new Audio('/audio/catch.mp3');
+            audio.play();
+        }
+
+        function playErrorSound() {
+            var audio = new Audio('/audio/error.mp3');
+            audio.play();
+        }
+
+        function playBackgroundMusic() {
+            var audio = document.getElementById('background-music');
+            audio.play();
+        }
+
+        function stopBackgroundMusic() {
+            var audio = document.getElementById('background-music');
+            audio.pause();
+        }
+
+        function playGameOverSound() {
+            const audio = document.getElementById('gameover-sound');
+            audio.currentTime = 0;
+            audio.play();
+        }
+
+        function stopGameOverSound() {
+            const audio = document.getElementById('gameover-sound');
+            audio.pause();
+            audio.currentTime = 0;
+        }
+
+        const startScreenMusic = new Audio('/audio/start.mp3');
+        startScreenMusic.loop = true; // Loop start music
+
+        function playStartMusic() {
+            startScreenMusic.play();
+        }
+
+        function stopStartMusic() {
+            startScreenMusic.pause();
+            startScreenMusic.currentTime = 0; // Reset to the beginning
+        }
+
+        function playGameMusic() {
+            const gameMusic = document.getElementById('background-music');
+            gameMusic.play();
+        }</script>
+
+</body>
+
+</html>

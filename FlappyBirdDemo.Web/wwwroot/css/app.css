@@ -1,0 +1,343 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html, body {
+    height: 100%; 
+}
+
+body {
+    display: flex;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevents scrolling */
+    height: 100%; /* Full viewport height */
+    background-image: url(../images/gingham.png); /* Path to your gingham image */
+    background-size: cover; /* Ensure the background covers the entire viewport */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Ensure the image doesn't repeat */
+    z-index: 0;
+}
+
+/* Score Tracker */
+.score-tracker {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    z-index: 10;
+}
+
+
+/* Game Container */
+.game-container {
+    width: 500px;
+    height: 730px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Sky Background */
+.sky {
+    width: 500px;
+    height: 580px;
+    position: absolute;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Ground */
+.ground {
+    background-image: url(../images/ground.png);
+    width: 500px;
+    height: 150px;
+    position: absolute;
+    top: 580px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 2;
+}
+
+/* Kitty Character */
+.kitty {
+    background-image: url(../images/kitty.png);
+    width: 60px;
+    height: 45px;
+    left: 220px;
+    position: absolute;
+}
+
+/* Pipes */
+.pipe {
+    background-image: url(../images/pipe.png);
+    width: 60px;
+    height: 300px;
+    position: absolute;
+    z-index: 1;
+}
+
+    .pipe.top {
+        transform: rotate(180deg);
+    }
+
+/* Start Game Screen */
+.start-game-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #ff9a9e, #fad0c4, #fbc2eb);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 10;
+    padding: 20px;
+}
+
+    .start-game-screen h1 {
+        font-size: 80px;
+        color: #ff6b6b;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .start-game-screen p {
+        font-size: 26px;
+        color: white;
+        font-family: 'Arial', sans-serif;
+        margin-bottom: 40px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .start-game-screen button {
+        padding: 15px 30px;
+        font-size: 22px;
+        background-color: #ff6b6b;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+    }
+
+        .start-game-screen button:hover {
+            background-color: #e05656;
+        }
+
+        .start-game-screen button:active {
+            transform: scale(0.98);
+        }
+
+/* Game Over Screen */
+.game-over-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #ff7e5f, #feb47b);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 10;
+    padding: 20px;
+}
+
+    .game-over-screen h1 {
+        font-size: 80px;
+        color: white;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .game-over-screen p {
+        font-size: 26px;
+        color: lightblue;
+        font-family: 'Arial', sans-serif;
+        font-weight: bold;
+        margin-bottom: 40px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+        .game-over-screen p:last-child {
+            font-size: 22px;
+            color: yellow;
+            font-weight: normal;
+        }
+
+    .game-over-screen p1 {
+        font-size: 26px;
+        color: white;
+        font-family: 'Arial', sans-serif;
+        margin-bottom: 40px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .game-over-screen .high-score {
+        color: #FFD700;
+        font-size: 28px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .game-over-screen img {
+        max-width: 50%;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        animation: cryAnimation 1s ease-in-out infinite;
+    }
+
+    .game-over-screen button {
+        padding: 15px 30px;
+        font-size: 22px;
+        background-color: #ff6600; /* Solid color */
+        color: white;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+        margin-top: 20px; /* Add some space above the button to move it lower */
+    }
+
+        .game-over-screen button:hover {
+            background-color: #ff3300;
+        }
+
+        .game-over-screen button:active {
+            transform: scale(0.98);
+        }
+
+/* Bouncing Animation */
+.bouncing {
+    width: 600px;
+    height: auto;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Bubble Style */
+.bubble {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: float 6s infinite ease-in-out;
+    pointer-events: none;
+}
+
+/* Bubble Animation */
+@keyframes float {
+    from {
+        transform: translateY(100vh);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(-10vh);
+        opacity: 0.2;
+    }
+}
+
+
+/* Loading Screen Styles */
+#app {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    color: white;
+    font-size: 36px;
+    font-weight: bold;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+    animation: fadeIn 1.5s ease-out; 
+    z-index: 9999; 
+}
+
+    #app .loading-text {
+        margin-top: 20px;
+        font-size: 24px;
+        color: #ff6b6b;
+        animation: pulse 1.5s infinite; 
+    }
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes cryAnimation {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

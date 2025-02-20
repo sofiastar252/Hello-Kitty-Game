@@ -1,0 +1,7 @@
+﻿<div class="kitty" style="@_kittyCss"></div>
+
+@code {
+    [Parameter] public KittyModel Model { get; set; }
+
+    string _kittyCss => $"bottom: {Model.DistanceFromGround}px";
+}

@@ -1,0 +1,159 @@
+﻿@inject IJSRuntime JSRuntime
+
+<div class="border-left"></div>
+<div class="border-top"></div>
+
+<div class="game-container" tabindex="0" @onclick="HandleClick" @onkeyup="HandleKeyDown">
+    <div class="sky" style="background-image: url(@currentBackground)">
+        <Kitty Model="_gameManager.Kitty" />
+    </div>
+    <div class="ground"></div>
+
+    @foreach (var pipe in _gameManager.Pipes)
+    {
+        <Pipe Model="pipe" />
+    }
+
+    <div class="score-tracker">
+        Score: @_gameManager.Score
+    </div>
+</div>
+
+<div class="border-right"></div>
+<div class="border-bottom"></div>
+
+@if (!_gameStarted && !_hasPlayedBefore)
+{
+    <div id="start-game-screen" class="start-game-screen">
+        <div class="bubble-container">
+            @foreach (var bubble in bubbles)
+            {
+                <div class="bubble"
+                     style="left: @bubble.Left%; width: @bubble.Size; height: @bubble.Size; animation-delay: @bubble.AnimationDelay; animation-duration: @bubble.AnimationDuration;">
+                </div>
+            }
+        </div>
+
+        <h1>Welcome to Hello Kitty Game</h1>
+        <p>Are you ready to begin an exciting adventure?</p>
+        <div>
+            <img class="bouncing" src="/images/hk.png" alt="Cat">
+        </div>
+        <button @onclick="StartGame">Start Game</button>
+    </div>
+}
+
+@if (_gameOverVisible)
+{
+    <div id="gameover-screen" class="game-over-screen">
+        <h1>Game Over</h1>
+        <p>Your Score: @_gameManager.Score</p>
+        <p class="high-score">High Score: @_gameManager.HighScore</p>
+        <p1>Click the button below to play again!</p1>
+        <img src="/images/cry.png" alt="Cry" />
+        <button @onclick="RestartGame">Restart</button>
+    </div>
+}
+
+@code {
+    private GameManager _gameManager;
+    private bool _gameOverVisible = false;
+    private bool _gameStarted = false;
+    private bool _hasPlayedBefore = false;
+    private List<Bubble> bubbles = new();
+    private string currentBackground = "/images/bg1.png"; // Default background
+
+    protected override async Task OnInitializedAsync()
+    {
+        _gameManager = new GameManager(JSRuntime);
+        _gameManager.MainLoopCompleted += (o, e) => StateHasChanged();
+        _gameManager.GameOverOccurred += OnGameOver;
+
+        GenerateBubbles(20); // Generate 20 bubbles for the start screen
+
+        // Play start screen music
+        await JSRuntime.InvokeVoidAsync("playStartMusic");
+    }
+
+    private void HandleClick()
+    {
+        if (_gameStarted)
+        {
+            _gameManager.Jump();
+        }
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "b" || e.Key == "B")
+        {
+            var currentBgIndex = int.Parse(currentBackground.Substring(currentBackground.Length - 5, 1));
+            var newBgIndex = currentBgIndex % 6 + 1; // Cycle through 6 backgrounds (bg1.png to bg6.png)
+            currentBackground = $"/images/bg{newBgIndex}.png";
+        }
+    }
+
+    private void OnGameOver(object sender, EventArgs e)
+    {
+        _gameOverVisible = true;
+
+        // Stop background music and play game over sound
+        JSRuntime.InvokeVoidAsync("stopBackgroundMusic");
+        JSRuntime.InvokeVoidAsync("playGameOverSound");
+
+        StateHasChanged();
+    }
+
+    private async Task RestartGame()
+    {
+        // Stop game over sound and restart background music
+        await JSRuntime.InvokeVoidAsync("stopGameOverSound");
+        await JSRuntime.InvokeVoidAsync("playBackgroundMusic");
+
+        _gameOverVisible = false;
+        _gameStarted = true; 
+        _hasPlayedBefore = true;
+        _gameManager.StartGame();
+
+        // Reset background to original (bg1.png)
+        currentBackground = "/images/bg1.png";
+
+        StateHasChanged();
+    }
+
+    private async Task StartGame()
+    {
+        // Stop start screen music and play game music
+        await JSRuntime.InvokeVoidAsync("stopStartMusic");
+        await JSRuntime.InvokeVoidAsync("playBackgroundMusic");
+
+        _gameStarted = true;
+        _hasPlayedBefore = true;
+        _gameManager.StartGame();
+    }
+
+    private void GenerateBubbles(int count)
+    {
+        var random = new Random();
+        bubbles.Clear();
+
+        for (int i = 0; i < count; i++)
+        {
+            bubbles.Add(new Bubble
+            {
+                Left = random.Next(0, 100), 
+                Size = $"{random.Next(10, 40)}px", 
+                AnimationDelay = $"{random.NextDouble() * 5:0.0}s",
+                AnimationDuration = $"{random.Next(5, 11)}s"
+            });
+        }
+    }
+
+    private class Bubble
+    {
+        public int Left { get; set; } 
+        public string Size { get; set; } 
+        public string AnimationDelay { get; set; } 
+        public string AnimationDuration { get; set; } 
+    }
+}
